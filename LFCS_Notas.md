@@ -302,6 +302,77 @@ chmod 640 configmap.yaml
 #result: -rw-r-----@ 1 emer  staff   234455 Oct 29 08:57 configmap.yaml
 ```
 
+### SUID, SGID and Sticky Bit
+
+**SUID** A special permission that allow users to run an executable with the permissions of the executable's owner.
+
+```bash
+ls -l executableFileSUID
+# Result: -rw-rw-r--@ 1 emer  staff   234455 Oct 29 08:57 executableFileSUID
+chmod 4664 executableFileSUID # set 4 to indicate bit SUID for user
+# Result: -rwSrw-r--@ 1 emer  staff   234455 Oct 29 08:57 executableFileSUID
+# The capital S allows us to know that the SUID is active for this file,
+# But there is not executable permission
+chmod 4764 executableFileSUID # set 4 to indicate bit SUID 
+# Result: -rwsrw-r--@ 1 emer  staff   234455 Oct 29 08:57 executableFileSUID
+# The lower s allows us to know that the SUID is active for this file,
+# And  there is executable permission
+```
+
+If anyone else runs the file, it would run as emer's user  instead of the user who ran it
+
+**Find file** with `SUID`permision
+```bash
+find . -perm /4000
+# Result: executableFileSUID
+```
+
+
+ **SGID** Is similar to SUID but, appies to both executable and directories.
+
+```bash
+chmod 2664 executableFileSGID # set 2 to indicate bit SGID for group
+# Result: -rw-rwSr--@ 1 emer  staff   234455 Oct 29 08:57 executableFileSGID
+chmod 2674 executableFileSGID # set 2 to indicate bit SGID for group
+# Result: -rw-rwsr--@ 1 emer  staff   234455 Oct 29 08:57 executableFileSGID
+```
+
+**Find file** with `SGID`permision
+```bash
+find . -perm /2000
+# Result: executableFileSGID
+```
+
+**Set SUID and SGUID at same time**
+
+```bash
+chmod 6664 executableFileBoth # set 2 to indicate bit SUID for group
+# Result: -rwSrwSr--@ 1 emer  staff   234455 Oct 29 08:57 executableFileBoth
+chmod 6674 executableFileBoth # set 2 to indicate bit SUID for group
+# Result: -rwSrwsr--@ 1 emer  staff   234455 Oct 29 08:57 executableFileBoth
+```
+**Find file** with `SGID or SUID`permision
+```bash
+find . -perm /6000
+# Result: 
+# executableFileBoth
+# executableFileSGID
+# executableFileSUID
+```
+
+ **Sticky Bit** A especial permission that can be set on directories. It restricts file deletion in that directory.
+ Only File owner, Directory owner or s uperuser (root) can delete it.
+
+```bash
+ls -ld stickyDir/
+# Result: drwxrwxr-x@ 1 emer  staff   234455 Oct 29 08:57 stickyDir/
+chmod 1777 stickyDir/ # set 1 to indicate Sticky Bit
+# Result: drwxrwxrwt@ 1 emer  staff   234455 Oct 29 08:57 stickyDir/ 
+chmod 1666 stickyDir/ # set 1 to indicate Sticky Bit
+# Result: drw-rw-rwT@ 1 emer  staff   234455 Oct 29 08:57 stickyDir/ 
+
+```
+
 
 ---
 
