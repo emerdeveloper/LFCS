@@ -131,6 +131,178 @@ readlink [file]                    # Show path of original file
 **Caracteristicas**
 * Sirve con ficheros y directorios de otros almacenamientos externos (different filesystems).
 
+
+### Lab: Files, Directories, Hard and Soft Links
+* What is the top-level directory in Linux?
+/
+* In what form does Linux organise files and directories?
+filesystem tree
+* What is the command to print your current working directory?
+pwd
+* What is the command to climb up one directory?
+cd ..
+* Absolute paths always start out with the root directory /. Then we specify the sub-directories we want to descend into; /home/bob/Documents/Invoice.pdf is an example of such a path. In this case, first home, then bob, and then Documents. We can see the sub-directory names are separated by a /, and we finally get to the file we want to access, i.e, Invoice.pdf. An absolute path can end with the name of a file or a directory.
+As per the example above, If we'd want to delete the Documents directory, how would we specify the path?
+/home/bob/Documents/
+* Create a directory named lfcs under the /home/bob directory.
+cd /home/bob
+mkdir lfcs
+* Create a blank file named lfcs.txt under the/home/bob/lfcs directory.
+touch lfcs.txt
+* Copy the /tmp/Invoice directory (including all its contents) to the /home/bob directory.
+cp -r /tmp/Invoice/ /home/bob/
+* Copy the /home/bob/myfile.txt file to the/home/bob/data/ directory. Make sure to preserve its attributes.
+ln myfile.txt data/
+* Copy the /home/bob/lfcs directory (including all its content) into the /home/bob/old-data/ directory.
+cp -r lfcs/ old-data/
+* Delete the /home/bob/lfcs/lfcs.txt file.
+rm lfcs/lfcs.txt
+* Move all contents, excluding the directory itself, from /home/bob/lfcs to /home/bob/new-data/ directory.
+mv lfcs/ new-data/
+* Delete directory /home/bob/lfcs .
+rm -r lfcs/
+* Create a soft link to /tmp directory. Create this link in /home/bob directory and call it link_to_tmp.
+ln -s /tmp link_to_tmp
+* Create a hard link to /opt/hlink file. Create this link in /home/bob/ directory and call it hlink.
+ln /opt/hlink hlink
+* There is a file called /home/bob/new_file; rename this to /home/bob/old_file.
+mv new_file old_file
+* Create a directory named 9 under the /tmp/1/2/3/4/5/6/7/8 directory. Please note that the structure of sub-directories from 1 to 8 does not exist. However, mkdir has a command line option to automatically create all of these sub-directories automatically in one shot, instead of 9 consecutive commands. This option is described in the help output or manual pages as make parent directories as needed. Find out what the correct option is and use it to create the directory in one shot.
+     ```bash
+     mkdir --help # -p, --parents     no error if existing, make parent directories as needed
+     mkdir -p /tmp/1/2/3/4/5/6/7/8/9/
+     ```
+* ls -l shows you the time when a file has been last modified, but it only shows you the hour and the minute, usually in a form like 17:53. Find another way to make ls display the full/exact last modified time for the files in /home/bob directory.
+At what exact time was important_file created/modified?
+     ```bash
+     ls --help # --full-time            like -l --time-style=full-iso
+     ls -l --time-style=full-iso
+     ```
+
+
+### Owners and Groups
+
+* Sólo el usurio propierario del archivo o directorio puede cambiar los permisos además del usuario `root`
+* Sólo el usuario root puede cambiar el propietario de un archivo o directorio
+
+```bash
+ls -l 
+# output: -rw-r--r--@ 1 emer  staff   234455 Oct 29 08:57 configmap.yaml
+# emer is owmer of configmap.yaml file
+```
+```bash
+chgrp [group_name] [file/directory] # chage group of file/directory
+chgrp family configmap # -rw-r--r--@ 1 emer  family   234455 Oct 29 08:57 configmap.yaml
+groups # show which groups our current user belongs to
+sudo chown [user_name] [file/directory] # change the owner of file/directory
+sudo chown lex configmap.yaml # -rw-r--r--@ 1 lex  staff   234455 Oct 29 08:57 configmap.yaml
+sudo chown [user:family] [file/Directory] # revert the owner
+sudo chown emer:staff configmap.yaml # -rw-r--r--@ 1 emer  staff   234455 Oct 29 08:57 configmap.yaml
+```
+
+### File and Directory Permissions
+```bash
+ls -l 
+# output: -rw-r--r--@ 1 emer  staff   234455 Oct 29 08:57 configmap.yaml
+```
+First character tell us the type : 
+`d` - directory
+`l` - soft link
+`-` - regular file
+
+The next 9 characters tell us the permissions:
+first 3 characters: owner permissions: `rw-`
+next 3 characters: group permissions: `r--`
+last 3 characters: other users permissions: `r--`
+
+**Characters for files purposes**
+ 
+ 
+| bit | Purpose        | 
+| ----|----------------|
+| r   | Read File      |
+| w   | Write to File  |
+| x   | Execute (run)  |
+| -   | No permissions |
+
+**Characters for files purposes**
+
+| bit | Purpose        | 
+| ----|----------------|
+| r   | Read content Directory |
+| w   | Write into Directory  |
+| x   | Execute into (run)  |
+| -   | No permissions |
+
+**Adding Permissions**
+```bash
+chmod u+[permissions] [file/directory] # change permissions
+chmod u+x configmap.yaml # -rwxr--r--@ 1 emer  staff   234455 Oct 29 08:57 configmap.yaml
+```
+|   | option   | example |
+|---|----------|---------|
+|user| u+      | u+w / u+rw / u+rwx |
+|group| g+     | g+w / g+rw / g+rwx |
+|others| o+    | o+w / o+rw / o+rwx |
+
+**Removing Permissions**
+```bash
+chmod u-[permissions] [file/directory] # change permissions
+chmod u-x configmap.yaml # -rw-r--r--@ 1 emer  staff   234455 Oct 29 08:57 configmap.yaml
+```
+|   | option   | example |
+|---|----------|---------|
+|user| u-      | u-w / u-rw / u-rwx |
+|group| g-     | g-w / g-rw / g-rwx |
+|others| o-    | o-w / o-rw / o-rwx |
+
+**Setting exact Permissions**
+```bash
+chmod u=[permissions] [file/directory] # change permissions
+chmod u=x configmap.yaml # -r--r--r--@ 1 emer  staff   234455 Oct 29 08:57 configmap.yaml
+```
+|   | option   | example |
+|---|----------|---------|
+|user| u=      | u= / u=w / u=rw / u=rwx |
+|group| g=     | g= / g=w / g=rw / g=rwx |
+|others| o=    | o= / o=w / o=rw / o=rwx |
+
+both command have the same effect: 
+```bash
+chmod g= configmap.yaml
+chmod g-rwx configmap.yaml
+#result: -r--r-----@ 1 emer  staff   234455 Oct 29 08:57 configmap.yaml
+```
+
+we can mix options:
+```bash
+chmod u+rw, g=r, o= configmap.yaml
+#result: -rw-r-----@ 1 emer  staff   234455 Oct 29 08:57 configmap.yaml
+```
+
+**Octal Permissions**
+
+|permissions|value|
+|-----------|-----|
+|r          |4    |
+|w          |2    |
+|x          |1    |
+
+|user|group|others|
+|----|-----|------|
+|rw- | r-- |  --- |
+| 6  |  4  |   0  |
+|rwx | r-x |  r-x |
+| 7  |  5  |   5  |
+|rwx | rwx |  rwx |
+| 7  |  7   |   7  |
+
+```bash
+chmod 640 configmap.yaml
+#result: -rw-r-----@ 1 emer  staff   234455 Oct 29 08:57 configmap.yaml
+```
+
+
 ---
 
 ## 🔹 Tips para el examen
