@@ -370,7 +370,81 @@ chmod 1777 stickyDir/ # set 1 to indicate Sticky Bit
 # Result: drwxrwxrwt@ 1 emer  staff   234455 Oct 29 08:57 stickyDir/ 
 chmod 1666 stickyDir/ # set 1 to indicate Sticky Bit
 # Result: drw-rw-rwT@ 1 emer  staff   234455 Oct 29 08:57 stickyDir/ 
+```
 
+### Search Files
+```
+/
+├── usr
+│   ├── share
+├── var
+│   └── log
+├── etc
+│   └── ssh
+└── root
+``` 
+
+**find**
+To search files
+* Name
+```bash
+find [path_directory/] [search_parameters]
+find /bin/ -name file1.txt
+find [search_parameters] # With no path -> search in current directory
+find -name file1.txt
+find -iname file1 # ignore case sensitive
+find -name "f*" # match all names starting with f 
+```
+
+* Modified Time (content/data)
+Modificaton = Create or Edit 
+```bash
+find -mmin [minute]
+find -mmin 5 # exactly modified 5 minutes ago 
+find -mmin -5 # modified from now to last 5 minutes 
+find -mmin +5 # modified from last 5 minutes to older 
+find -mtime [24h_period]
+find -mtime 2 # work with 24h periods
+```
+* Modified Time (metadata)
+example: change permissions
+```bash
+find -cmin [minute]
+find -ctime [24h_period]
+```
+
+* Size
+```bash
+find -size [size]
+# c -> bytes
+# k -> kilobytes
+# M -> megabytes
+# G -> gigabytes
+find -size 512k # exactly 512 kb
+find -size +512k # greater than 512 kb
+find -size -512k # less than 512 kb
+```
+
+* Combine expresions
+```bash
+find -name "f*" -size 512k # AND operator 
+find -name "f*" -o  -size 512k # OR operator 
+find -not -name "f*" # NOT Operator - exclude
+find \! -name "f*" # NOT Operator - exclude
+```
+
+* Permissions 
+```bash
+Permissions: 664 = u+rw, g+rw, o+r
+find -perm 664 # find files with exactly 664 permissions
+find -perm u+rw,g+rw,o+r # find files with exactly 664 permissions. 
+find -perm -664 # find files with at least 664 permissions
+find -perm /664 # find files with any of these permissions
+
+find -perm 600 # find files where owner user only can read
+find -perm -100 # find files where owner user at least can execute
+find \! -perm -o=r # find files where others can read
+find -pem /u=r,g=r,o=r # find files where evereyone can read
 ```
 
 
