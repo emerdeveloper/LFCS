@@ -132,48 +132,50 @@ readlink [file]                    # Show path of original file
 * Sirve con ficheros y directorios de otros almacenamientos externos (different filesystems).
 
 
-### Lab: Files, Directories, Hard and Soft Links
+#### Lab: Files, Directories, Hard and Soft Links
 * What is the top-level directory in Linux?
-/
+`/`
 * In what form does Linux organise files and directories?
-filesystem tree
+`filesystem tree`
 * What is the command to print your current working directory?
-pwd
+`pwd`
 * What is the command to climb up one directory?
-cd ..
-* Absolute paths always start out with the root directory /. Then we specify the sub-directories we want to descend into; /home/bob/Documents/Invoice.pdf is an example of such a path. In this case, first home, then bob, and then Documents. We can see the sub-directory names are separated by a /, and we finally get to the file we want to access, i.e, Invoice.pdf. An absolute path can end with the name of a file or a directory.
+`cd ..`
+* Absolute paths always start out with the root directory `/`. Then we specify the sub-directories we want to descend into; `/home/bob/Documents/Invoice.pdf` is an example of such a path. In this case, first home, then bob, and then Documents. We can see the sub-directory names are separated by a `/`, and we finally get to the file we want to access, i.e, `Invoice.pdf`. An absolute path can end with the name of a file or a directory.
 As per the example above, If we'd want to delete the Documents directory, how would we specify the path?
-/home/bob/Documents/
-* Create a directory named lfcs under the /home/bob directory.
-cd /home/bob
-mkdir lfcs
-* Create a blank file named lfcs.txt under the/home/bob/lfcs directory.
-touch lfcs.txt
-* Copy the /tmp/Invoice directory (including all its contents) to the /home/bob directory.
-cp -r /tmp/Invoice/ /home/bob/
-* Copy the /home/bob/myfile.txt file to the/home/bob/data/ directory. Make sure to preserve its attributes.
-ln myfile.txt data/
-* Copy the /home/bob/lfcs directory (including all its content) into the /home/bob/old-data/ directory.
-cp -r lfcs/ old-data/
-* Delete the /home/bob/lfcs/lfcs.txt file.
-rm lfcs/lfcs.txt
-* Move all contents, excluding the directory itself, from /home/bob/lfcs to /home/bob/new-data/ directory.
-mv lfcs/ new-data/
-* Delete directory /home/bob/lfcs .
-rm -r lfcs/
-* Create a soft link to /tmp directory. Create this link in /home/bob directory and call it link_to_tmp.
-ln -s /tmp link_to_tmp
-* Create a hard link to /opt/hlink file. Create this link in /home/bob/ directory and call it hlink.
-ln /opt/hlink hlink
-* There is a file called /home/bob/new_file; rename this to /home/bob/old_file.
-mv new_file old_file
-* Create a directory named 9 under the /tmp/1/2/3/4/5/6/7/8 directory. Please note that the structure of sub-directories from 1 to 8 does not exist. However, mkdir has a command line option to automatically create all of these sub-directories automatically in one shot, instead of 9 consecutive commands. This option is described in the help output or manual pages as make parent directories as needed. Find out what the correct option is and use it to create the directory in one shot.
+`/home/bob/Documents/`
+* Create a directory named lfcs under the `/home/bob` directory.
+  ```bash 
+  cd /home/bob
+  mkdir lfcs
+  ```
+* Create a blank file named `lfcs.txt` under the `/home/bob/lfcs` directory.
+`touch lfcs.txt`
+* Copy the `/tmp/Invoice` directory (including all its contents) to the `/home/bob` directory.
+`cp -r /tmp/Invoice/ /home/bob/`
+* Copy the `/home/bob/myfile.txt` file to the `/home/bob/data/` directory. Make sure to preserve its attributes.
+`ln myfile.txt data/`
+* Copy the `/home/bob/lfcs` directory (including all its content) into the `/home/bob/old-data/` directory.
+`cp -r lfcs/ old-data/`
+* Delete the `/home/bob/lfcs/lfcs.txt` file.
+`rm lfcs/lfcs.txt`
+* Move all contents, excluding the directory itself, from `/home/bob/lfcs` to `/home/bob/new-data/ directory`.
+`mv lfcs/ new-data/`
+* Delete directory `/home/bob/lfcs` .
+`rm -r lfcs/`
+* Create a soft link to `/tmp` directory. Create this link in `/home/bob` directory and call it `link_to_tmp.`
+`ln -s /tmp link_to_tmp`
+* Create a hard link to `/opt/hlink` file. Create this link in `/home/bob/` directory and call it hlink.
+`ln /opt/hlink hlink`
+* There is a file called `/home/bob/new_file`; rename this to `/home/bob/old_file`.
+`mv new_file old_file`
+* Create a directory named `9` under the `/tmp/1/2/3/4/5/6/7/8` directory. Please note that the structure of sub-directories from 1 to 8 does not exist. However, mkdir has a command line option to automatically create all of these sub-directories automatically in one shot, instead of `9` consecutive commands. This option is described in the help output or manual pages as make parent directories as needed. Find out what the correct option is and use it to create the directory in one shot.
      ```bash
      mkdir --help # -p, --parents     no error if existing, make parent directories as needed
      mkdir -p /tmp/1/2/3/4/5/6/7/8/9/
      ```
-* ls -l shows you the time when a file has been last modified, but it only shows you the hour and the minute, usually in a form like 17:53. Find another way to make ls display the full/exact last modified time for the files in /home/bob directory.
-At what exact time was important_file created/modified?
+* ls `-l` shows you the time when a file has been last modified, but it only shows you the hour and the minute, usually in a form like `17:53`. Find another way to make ls display the full/exact last modified time for the files in `/home/bob` directory.
+At what exact time was `important_file created/modified`?
      ```bash
      ls --help # --full-time            like -l --time-style=full-iso
      ls -l --time-style=full-iso
@@ -343,12 +345,12 @@ find . -perm /2000
 # Result: executableFileSGID
 ```
 
-**Set SUID and SGUID at same time**
+**Set SUID and SGID at same time**
 
 ```bash
-chmod 6664 executableFileBoth # set 2 to indicate bit SUID for group
+chmod 6664 executableFileBoth # set 6 to indicate 4+2 SUID and SGID
 # Result: -rwSrwSr--@ 1 emer  staff   234455 Oct 29 08:57 executableFileBoth
-chmod 6674 executableFileBoth # set 2 to indicate bit SUID for group
+chmod 6674 executableFileBoth # set 6 to indicate 4+2 SUID and SGID
 # Result: -rwSrwsr--@ 1 emer  staff   234455 Oct 29 08:57 executableFileBoth
 ```
 **Find file** with `SGID or SUID`permision
@@ -446,6 +448,120 @@ find -perm -100 # find files where owner user at least can execute
 find \! -perm -o=r # find files where others can read
 find -pem /u=r,g=r,o=r # find files where evereyone can read
 ```
+
+#### Lab - File Permissions, Search for Files
+* What command can be used to find files and directoriesmodified in the last 5 minutes in the `/dev` directory?
+`find /dev/ -mmin -5`
+* What command removes the write permission for the group from a file?
+`chmod g-w some_file`
+* Find files/directories under the `/var/log/` directory that the group can write to, but others cannot read or write to it. Save the list of the files/directories (with complete parent path) in the `/home/bob/data.txt` file.
+
+   You can use the redirection to save your command's output in a file i.e `[your-command] > /home/bob/data.txt`
+
+
+   To make this easier to understand, the logic of the command can be broken down like this:
+
+   - Permissions for the group have to be at least `w`. If there's also an extra `r or x` in there, it will still match.
+
+   - Permissions for others have not to be `r or w`. That means, if any of these two permissions, `r or w`, match for others, the result has to be excluded.
+
+     ```bash
+     find /var/log/ -perm /g+w,o-rw > /home/bob/data.txt
+     find /var/log/ -perm -g=w,o-rw > /home/bob/data.txt
+     ```
+
+* Find our secret file under `/home/bob`. You can either look for a file that is exactly `213 kilobytes` or a file that has permission `402 in octal`.
+
+
+  Save the name (including the parent directory path) of this file in the `/home/bob/secfile.txt` file.
+
+  You can use the redirection to save your command's output in a file: `[your-command] > /home/bob/secfile.txt`
+
+     ```bash
+     find /home/bob/ -size 213k > /home/bob/secfile.txt
+     find /home/bob/ -perm 402 > /home/bob/secfile.txt
+     ```
+
+* In our lessons, we briefly mentioned the `setuid`, `setgid`, and `sticky bit` special permissions. Consider that `setuid` is short `for set user id` and `setgid` is short for `set group id`.
+
+
+  Add the permissions for `setuid`, `setgid`, and `sticky bit` on the `/home/bob/datadir` directory.
+
+     ```bash
+     ls -ld /home/bob/datadir/
+     #result: drwxr-xr-x 2 bob bob 4096 Dec 13 03:06 /home/bob/datadir/
+     chmod 7755 /home/bob/datadir/
+     # result: drwsr-sr-t 2 bob bob 4096 Dec 13 03:06 /home/bob/datadir/
+     ```
+
+* Find the `dogs.txt` file under the `/usr/share` directory.
+
+  Save the location of the file in the `/home/bob/dogs` file.
+
+  `find /usr/share/ -name dogs.txt > /home/bob/dogs`
+
+* Find the `cats.txt` file under `bob's` home directory and copy it into the `/opt` directory.
+
+     ```bash
+     find /home/bob/ -name cats.txt
+     # Result: /home/bob/.etc/h/e/r/cats.txt
+     sudo cp /home/bob/.etc/h/e/r/cats.txt /opt/
+     ls -l /opt/
+     # Result: -rw-r--r-- 1 root root    5 Dec 13 03:25 cats.txt
+     ```
+
+* Find all directories named pets in the `/var/directory` and save the output (along with directory path) in the `/home/bob/pets.txt` file.
+  You should be able to save the output in a file using redirection: `<your-command> > /home/bob/pets.txt`
+
+     `sudo find /var/ -name pets > /home/bob/pets.txt`
+
+* Find all the files whose permissions are `0777` in `/var` directory.
+      `find /var/ -perm 0777`
+
+* Find all the files whose permissions are `0640` in `/usr/` directory and save the output (along with parent path) in `/home/bob/.opt/permissions.txt` file.
+You should be able to save the output in a file using redirection: `<your-command> > /home/bob/.opt/permissions.txt`
+
+     ```bash
+      sudo find /usr/ -perm 0640
+      # /usr/local/test.txt
+      # /usr/games
+      # /usr/games/test2.txt
+      # /usr/games/test.txt
+      # /usr/src/test.txt
+      sudo find /usr/ -perm 0640 -name "test*" > /home/bob/.opt/permissions.txt
+      sudo find /usr/ -type f -perm 0640 > /home/bob/.opt/permissions.txt
+     ```
+
+* Find all the files which have been modified in the last 2 hours in `/usr` directory.
+`sudo find /usr/ -type f -mmin -120`
+
+* Find all the files which have been modified in the last 30 minutes in the `/var` directory.
+  `sudo find /var/ -type f -mmin -30`
+
+* Find all the files with size `20MB` in `/var` directory.
+  `sudo find /var/ -type f -size 20M`
+
+* Find all files between `5mb` and `10mb` in the `/usr` directory and save the output (along with parent path) in the`/home/bob/size.txt` file.
+
+  You should be able to save the output in a file using redirection: `<your-command> > /home/bob/size.txt`
+  `sudo find /usr/ -type f -size -10M -size +5M > /home/bob/size.txt`
+
+* create `LFCS` directory under `bob's` home directory and update permissions to owner permissions only `read` and groups and others `have not to be r, w, x`
+
+  ```bash
+  mkdir /home/bob/LFCS
+  chmod 100 /home/bob/LFCS/
+  ls -ld /home/bob/LFCS/
+  # result: d--x------ 2 bob bob 4096 Dec 15 23:25 /home/bob/LFCS/
+  ```
+
+* Update the permissions for `some_directory` to `rwxr-xr-x`
+ ```bash
+   sudo find -name some_directory # ./some_directory
+   ls -ld ./some_directory # d--------- 2 bob bob 4096 Dec 15 23:24 ./some_directory
+   chmod 755 ./some_directory
+   ls -ld ./some_directory # drwxr-xr-x 2 bob bob 4096 Dec 15 23:24 ./some_directory
+ ```
 
 
 ---
