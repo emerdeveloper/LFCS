@@ -63,6 +63,7 @@ The output will be the content of file
 ls -al    # Lista en formato largo + archivos ocultos
 ls -a     # Incluye archivos ocultos
 ls -l     # Formato largo/detallado (permisos, propietario, fecha)
+ls -ld    # Formato largo/detallado (permisos, propietario, fecha) de directorios
 ls -l -a  # Formato largo + ocultos (archivos pseudo ocultos que comienzan con .)
 ls -lh    # Formato largo con tamaños legibles (human-readable)
 ```
@@ -556,12 +557,119 @@ You should be able to save the output in a file using redirection: `<your-comman
   ```
 
 * Update the permissions for `some_directory` to `rwxr-xr-x`
- ```bash
+   ```bash
    sudo find -name some_directory # ./some_directory
    ls -ld ./some_directory # d--------- 2 bob bob 4096 Dec 15 23:24 ./some_directory
    chmod 755 ./some_directory
    ls -ld ./some_directory # drwxr-xr-x 2 bob bob 4096 Dec 15 23:24 ./some_directory
- ```
+  ```
+
+
+### Compare and manipulate file content
+
+**cat**
+Show file content from the up to bottom
+`cat [file_path]`
+
+**tac**
+Show file content from then bottom to up
+`tac [file_path]`
+
+**tail**
+By default show the last 10 lines.
+We can indicate how many lines to show.
+```bash 
+tail [file_path] # By default show the last 10 lines.
+tail -n 20 [file_path] # indicate how many lines to show
+```
+
+**head**
+By default show the first 10 lines.
+We can indicate how many lines to show.
+```bash 
+head [file_path] # By default show the first 10 lines.
+head -n 20 [file_path] # indicate how many lines to show
+```
+
+**sed** - **s**tream **ed**itor
+Search and replace all the requiered text
+```bash 
+sed 's/canda/canada/g' [file_path] # previsualize changes without save it
+# s/ -> search
+# /g -> global
+# will search and reaplce canda to canada in all file content
+
+sed 's/canda/canada/' [file_path] # previsualize changes without save it
+# will search and reaplce canda to canada in the first one coincidence
+
+sed -i 's/canda/canada/g' [file_path]  # edit file with changes and save it
+# -i -> --in-place
+```
+
+**cut**
+cut file content with delimiter
+```bash
+cut -d ' ' -f 1 [file_path]
+# -d ' '  -> delimiter
+# -f 1    -> specify the fields we want to extract
+# will cut the first word of file and show the previsualize
+
+cut -d ',' -f 3 [file_path] > [file_path]
+# will cut the third colunm of file and save result in another file
+```
+
+**uniq**
+remove the repeated lines that are next to each other
+`uniq countires.txt`
+
+**sort**
+sort entries the files alphanumeric
+`sort countires.txt`
+
+```bash
+sort countires.txt | uniq
+# send the sort command output to uniq comand with pipe |
+```
+
+**diff: Comparing files**
+**diff**erences
+`diff [file1] [file2]`
+
+**c**ontent
+`diff -c [file1] [file2]`
+
+**s**yde-by-side **diff**
+```bash
+sdiff [file1] [file2]
+diff -y [file1] [file2]
+# are the same command
+```
+
+### Pagers and Vi
+
+**less**
+Open file in a pager
+```bash
+less [file_path] # show file
+# with / -> search words in file 
+# with n -> navigate to next coincidence (down)
+# with n -> navigate to previous coincidence (up)
+# with / -> search words in file
+```
+**more**
+Works similar to **less**
+`more [file_path]`
+
+**vim**
+To create or edit files
+```bash
+vim [file] # create or open file to edit it
+# with i       -> insert text in file
+# with i       -> insert text in file 
+# with :wq     -> Write and quick - save and exit
+# with :q!      -> exit without save
+# with / -> search words in file 
+```
 
 
 ---
