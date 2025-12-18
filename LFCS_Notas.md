@@ -604,6 +604,10 @@ sed 's/canda/canada/' [file_path] # previsualize changes without save it
 
 sed -i 's/canda/canada/g' [file_path]  # edit file with changes and save it
 # -i -> --in-place
+
+sed -i 's/disabled/enabled/gi' /home/bob/values.conf # ignore case sensitive
+sed -i '500,2000s/enabled/disabled/g' /home/bob/values.conf # search and replace in file from line number 500 to 2000
+sed -i 's~#%$2jh//238720//31223~$2//23872031223~g' /home/bob/data.txt # search and replace values contains / to don't confuse use ~
 ```
 
 **cut**
@@ -654,7 +658,7 @@ less [file_path] # show file
 # with / -> search words in file 
 # with n -> navigate to next coincidence (down)
 # with n -> navigate to previous coincidence (up)
-# with / -> search words in file
+# with /[word]\c -> search words with not case sesitive
 ```
 **more**
 Works similar to **less**
@@ -667,12 +671,122 @@ vim [file] # create or open file to edit it
 # with i       -> insert text in file
 # with i       -> insert text in file 
 # with :wq     -> Write and quick - save and exit
-# with :q!      -> exit without save
-# with / -> search words in file 
+# with :q!     -> exit without save
+# with /[word] -> search words in file 
+# with /[word]\c  -> search words with not case sesitive
+# with yy      -> copy entire line
+# with dd      -> cut entire line
+# with p       -> paste text 
+# with :[number] -> go to number line
+# with [number]dd -> select the first [number] lines and delete it
 ```
 
+### Searh with grep
 
----
+```bash
+grep -i --color '[word]' [path_file] # -i -> ignore case sensitive
+grep -i -c '[word]' [path_file] # -c -> context: return number of coincidences 
+grep -r '[word]' [path_directory] # -r -> recursive option 
+# search throw all files that exists in directory and subdirectories
+grep -r -c'[word]' [path_directory] # -c -> context: return files and number of coincidences  
+grep -ri '[word]' [path_directory] # -i -> ignore case sensitive
+grep -vi '[word]' [path_file] # -v -> invert-macth: search lines when don't contain the text 
+grep -wi '[word]' [path_file] # -w -> words : seach exactly coincidence
+grep -oi '[word]' [path_file] # -o -> only-matching : return only the word if exists 
+```
+
+### Regular Expressions
+
+|Operators|Action| Example | Extended |
+|---------|------|----------|---------|
+|^        | The line begins with | grep '^PASS ' /etc/login.defs |
+|$        | The line ends with | grep 'mail$' /etc/login.defs |
+|.        | Match any one character | grep -r  'c.t' /etc/ |
+|\        | Escaping for special characters| grep -r  '\\.' /etc/loign.defs | grep -Er '.' /etc/  <br> egrep -r '. ' /etc/ |
+|*        | Match the previous element 0 or more times| grep -r 'let*' /etc/loing.defs |
+|+ special| Match the previous element 1 or more times | grep -r '0\\+' /etc/ |grep -Er '0+' /etc/  <br> egrep -r '0+' /etc/|
+|?        | Make the previous element optional (0 o 1 times )| | egrep -r 'disabled?' /etc/|
+|\|       | Match one thing or the other (left or right)| | egrep -r 'enable\ |disabled' /etc/|
+|[]       | Ranges or sets [a-z] [0-9]| | egrep -r 'c[au]t' /etc/| 
+|()       | Subexpressions (hierarchy)| | egrep -r '/dev/(([a-z])*[0-9]?)*' /etc/ <br> egrep -r '/dev/(([a-z]\|[A-Z])*[0-9]?)*' /etc/ | 
+|[^]      | Negated Ranges or sets | | egrep -r 'https[^:]' /etc/ <br> egrep -r 'http[^s:]' /etc/ <br> egrep -r '/[^a-z]' /etc/  |
+|{[min],[max]} <br> {[exactly]}       | Previous element can exist this many times | | egrep -r '0{3,}' /etc/ <br> egrep -r '10{,3}' /etc/ <br> egrep -r '0{ 3}' /etc/|
+
+**Combine operators**
+```bash
+# .*
+grep '/.*/' /etc/login.defs
+# Begins with /
+# Has 0 or more characters between
+# ends with a /
+#Result: 
+# /usr/ 
+# /usr/share
+
+grep -r '/dev/.*' /etc/ # many coincidences
+grep -r '/dev/[a-z]*' /etc/
+# * amplify the search 
+grep -r '/dev/[a-z]*[0-9]' /etc/ # results must end with a number
+grep -r '/dev/[a-z]*[0-9]?' /etc/ # make optional end with a  number
+```
+
+#### Lab: File Content, Regular Expressions
+
+* Which of the following commands can be used to manipulate strings in a file?
+`sed`
+
+* Which of the following commands will you use to display the top 5 lines of a file called `myfile`?
+`head -5 myfile`
+
+* Which of the following commands can you use to filter out the lines that contain a particular pattern?
+`grep`
+
+* How can we ignore the case (small or capital) differences while comparing two files using the `diff` command?
+`diff -i`
+
+* You have the following content in `/home/bob/testfile` (this is just an example file):
+  ```
+  a;b;c;d
+  x;y;z
+  ```
+  How would you extract/print the `b` and the `y`?
+  `cut -d ';' -f 2 testfile`
+
+* Change all values `enabled` to `disabled` in the `/home/bob/values.conf` config file.
+ `sed -i 's/enable/disabled/g' /home/bob/values.conf`
+
+* Change all values `disabled` to `enabled` in the `/home/bob/values.conf` config file, ignoring the case sensitivity.
+
+  For example, any string like `disabled`, `DISABLED`, `Disabled`, etc., must match and should be replaced with `enabled`.
+
+  `sed -i 's/disabled/enabled/gi' /home/bob/values.conf`
+
+* Change all values `enabled` to `disabled` in the `/home/bob/values.conf` config file from line number `500` to `2000`.
+
+  `sed -i '500,2000s/enabled/disabled/g' /home/bob/values.conf`
+
+* Replace all occurrences of string `#%$2jh//238720//31223` with `$2//23872031223` in the `/home/bob/data.txt` file.
+  `sed -i 's~#%$2jh//238720//31223~$2//23872031223~g' /home/bob/data.txt`
+
+* Open the `/home/bob/testfile` file in any editor (vi, nano etc) and move the line present on line no:`1049` to line no: `5`.
+  ```bash
+  vim /home/bob/testfile
+  :1049
+  yy
+  :1
+  p
+  :wq
+  ```
+* Delete the first `1000` lines from the `/home/bob/testfile` file.
+   ```bash
+   vim /home/bob/testfile
+   :1,1000d
+   :wq
+   ```
+
+
+
+--- 
 
 ## 🔹 Tips para el examen
 - Usa `hostnamectl` para cambiar el hostname.
