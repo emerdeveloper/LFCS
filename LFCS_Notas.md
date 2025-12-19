@@ -24,25 +24,25 @@
 ## 📝 Notas Actuales del Curso
 
 ### Preguntas
-* If the apropos command does not work because your manual pages are not indexed, what command can you use to manually refresh these?
+* If the `apropos` command does not work because your manual pages are not indexed, what command can you use to manually refresh these?
 `mandb`
 * You are trying to use `ssh alex@localhost` to log in through SSH. Your connection is refused. ssh has a command line option to show you the verbose output. That will show a lot more status messages and help you debug why this connection is failing. What is the correct option for that? (you need not make ssh connection work at this point)
 `ssh -v eme@localhost`
 * You type `host` in the terminal. What keys do you press to see some suggestions about what you can type here?
 `TAB` `TAB`
-* What page has System administration commands?
+* What page has `System administration` commands?
 `Section 8`
 * How many files are hidden in `/home/bob/data/` ?
-`ls --all /home/bob/data/`o `ls -a /home/bob/data/`
+`ls --all /home/bob/data/` o `ls -a /home/bob/data/`
 
 * SSH into `node01` host from `ubuntu-host` and create a blank file called `/home/bob/myfile` in `node01` host.
 You should be able to create the file using `touch /home/bob/myfile` command.
 Please find below the SSH credentials for `node01` host:
-     ```bash
-     Host: node01
-     Username: bob
-     Password: caleston123
-     ```
+   ```bash
+   Host: node01
+   Username: bob
+   Password: caleston123
+   ```
 
 * We are trying to run the `apropos ssh` command to get some details about the commands related to ssh, but we are getting this error:
 `ssh: nothing appropriate`
@@ -81,7 +81,7 @@ ls -lh    # Formato largo con tamaños legibles (human-readable)
 ```
 
 #### Paths | Rutas
-**Ruta absoluta:** comienza desde la raíz (/). Ejemplo: `/home/eme/Pictures/dog.jpg`
+**Ruta absoluta:** comienza desde la raíz (`/`). Ejemplo: `/home/eme/Pictures/dog.jpg`
 **Ruta relativa:** comienza a partir de una directorio actual (Current working Directory)
 
 **Comandos útiles:**
@@ -100,7 +100,7 @@ cp [source] [destination]     # copy copiar archivos
 cp -r [source] [destination]  # recursive - copy directory with all content
 mv [source] [destination]     # move/rename - file or directory
 rm [path_file]                # remove - delete file
-rm -r [path_directory]             # remove directory with all content
+rm -r [path_directory]        # remove directory with all content
 ```
 
 #### Hard Links
@@ -108,18 +108,18 @@ rm -r [path_directory]             # remove directory with all content
 ```bash
 stat [file]    # ver Inode de ficheros y directorios (Inode) -> referencia de de almacenamiento y seguimiento de metadatos como:  permisos y fechas de actualización 
                # ver Links - indica a cuantos usuarios del mismo ordenador está compartido el archivo, esto no lo duplica, sólo apuntan al mismo Inode. Si un usuario elimina un archivo compartido, sólo eliminará su Link referenciado al Inode, el otro usuario seguirá visualizando el archivo por que tiene su propio Link to Inode
-ln [path_target_file] [path to link file]    # para linkear (share) archivo con varios usuarios.
+ln [path_target_file] [path_to_link_file]    # para linkear (share) archivo con varios usuarios.
                                              # create hard link
 ```
 **Caracteristicas y Limitaciones**
 * Sólo se pueden establecer con archivos, no directorios.
 * Sólo con archivos del mismo sistema, no con un almacenamiento externo.
 * Tener en cuenta de tener los permisos necesarios para aceder al archivo (asignar todos los nombres de usuarios al mismo grupo)
-     ```bash
-     useradd -a -G family aron
-     useradd -a -G family alex
-     chmod 660 /home/aron/Pictures/picture.jpg
-     ```
+```bash
+  useradd -a -G family aron
+  useradd -a -G family alex
+  chmod 660 /home/aron/Pictures/picture.jpg
+```
 
 #### Soft Links | Enlaces simbólicos
 **Concepto:** actúan como accesos directos al archivo o directorio.
@@ -145,7 +145,7 @@ readlink [file]                    # Show path of original file
 * Absolute paths always start out with the root directory `/`. Then we specify the sub-directories we want to descend into; `/home/bob/Documents/Invoice.pdf` is an example of such a path. In this case, first home, then bob, and then Documents. We can see the sub-directory names are separated by a `/`, and we finally get to the file we want to access, i.e, `Invoice.pdf`. An absolute path can end with the name of a file or a directory.
 As per the example above, If we'd want to delete the Documents directory, how would we specify the path?
 `/home/bob/Documents/`
-* Create a directory named lfcs under the `/home/bob` directory.
+* Create a directory named `lfcs` under the `/home/bob` directory.
   ```bash 
   cd /home/bob
   mkdir lfcs
@@ -175,8 +175,8 @@ As per the example above, If we'd want to delete the Documents directory, how wo
      mkdir --help # -p, --parents     no error if existing, make parent directories as needed
      mkdir -p /tmp/1/2/3/4/5/6/7/8/9/
      ```
-* ls `-l` shows you the time when a file has been last modified, but it only shows you the hour and the minute, usually in a form like `17:53`. Find another way to make ls display the full/exact last modified time for the files in `/home/bob` directory.
-At what exact time was `important_file created/modified`?
+* `ls -l` shows you the time when a file has been last modified, but it only shows you the hour and the minute, usually in a form like `17:53`. Find another way to make ls display the full/exact last modified time for the files in `/home/bob` directory.
+At what exact time was `important_file` created/modified?
      ```bash
      ls --help # --full-time            like -l --time-style=full-iso
      ls -l --time-style=full-iso
@@ -784,7 +784,7 @@ grep -r '/dev/[a-z]*[0-9]?' /etc/ # make optional end with a  number
    :wq
    ```
 
-
+* 
 
 --- 
 
