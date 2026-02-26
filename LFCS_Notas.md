@@ -784,7 +784,30 @@ grep -r '/dev/[a-z]*[0-9]?' /etc/ # make optional end with a  number
    :wq
    ```
 
-* 
+* In the `/home/bob/textfile` file, there's a number that has `5 digits`. Save the number in the `/home/bob/number` file.
+
+  `egrep -r '[0-9]{5}' /home/bob/textfile > /home/bob/number`
+
+* How many numbers in `/home/bob/textfile` begin with the number `2`. Save the count in the `/home/bob/count` file.
+
+  `egrep -rc '^2' /home/bob/textfile > /home/bob/count`
+
+* How many lines in the /home/bob/testfile file begin with string Section, regardless of case.
+Save the count in the /home/bob/count_lines file.
+
+  `egrep -rci '^Section' /home/bob/testfile > /home/bob/count_lines`
+
+* Find all lines in the/home/bob/testfile file that contain string man; it must be an exact match.
+
+  For example, the line like # before /usr/man or NOCACHE keeps man should match but # given manpath for For a manpath must not match.
+
+
+  Save the filtered lines in the /home/bob/man_filtered file.
+
+  `grep -w man /home/bob/testfile >  /home/bob/man_filtered`
+
+* Save the last 500 lines of the /home/bob/textfile file in the /home/bob/last file.
+  `tail -500 /home/bob/textfile > /home/bob/last`
 
 --- 
 
